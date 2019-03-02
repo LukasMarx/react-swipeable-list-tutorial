@@ -31,13 +31,19 @@ class SwipeableListItem extends React.Component {
     this.onDragEndTouch = this.onDragEndTouch.bind(this);
     this.onDragEnd = this.onDragEnd.bind(this);
     this.updatePosition = this.updatePosition.bind(this);
-    this.getOnClickCallback = this.getOnClickCallback.bind(this);
-    this.getOnSwipeCallback = this.getOnSwipeCallback.bind(this);
+    this.onClicked = this.onClicked.bind(this);
+
+    this.onSwiped = this.onSwiped.bind(this);
   }
 
   componentDidMount() {
     window.addEventListener("mouseup", this.onDragEndMouse);
     window.addEventListener("touchend", this.onDragEndTouch);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("mouseup", this.onDragEndMouse);
+    window.removeEventListener("touchend", this.onDragEndTouch);
   }
 
   onDragStartMouse(evt) {
@@ -78,7 +84,7 @@ class SwipeableListItem extends React.Component {
       if (this.left < this.listElement.offsetWidth * threshold * -1) {
         this.left = -this.listElement.offsetWidth * 2;
         this.wrapper.style.maxHeight = 0;
-        this.getOnSwipeCallback()();
+        this.onSwiped();
       } else {
         this.left = 0;
       }
@@ -124,12 +130,16 @@ class SwipeableListItem extends React.Component {
     }
   }
 
-  getOnClickCallback() {
-    return this.props.onClick ? this.props.onClick : () => {};
+  onClicked() {
+    if (this.props.onSwipe) {
+      this.props.onSwipe();
+    }
   }
 
-  getOnSwipeCallback() {
-    return this.props.onSwipe ? this.props.onSwipe : () => {};
+  onSwiped() {
+    if (this.props.onSwipe) {
+      this.props.onSwipe();
+    }
   }
 
   render() {
@@ -144,7 +154,7 @@ class SwipeableListItem extends React.Component {
             )}
           </div>
           <div
-            onClick={this.getOnClickCallback()}
+            onClick={this.onClicked}
             ref={div => (this.listElement = div)}
             onMouseDown={this.onDragStartMouse}
             onTouchStart={this.onDragStartTouch}

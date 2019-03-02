@@ -3,15 +3,18 @@
   align-items: center;
   box-sizing: border-box;
   background-color: #fff;
+  height: 100%;
+  display: flex;
 }
 
 .BouncingListItem {
   transition: transform 0.5s ease-out;
-
   width: 100%;
   align-items: center;
   box-sizing: border-box;
   background-color: #fff;
+  height: 100%;
+  display: flex;
 }
 
 .Background {
